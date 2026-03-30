@@ -12,14 +12,11 @@ amcl:
     global_frame_id: map
     robot_model_type: "nav2_amcl::DifferentialMotionModel"
 
-    # ── 粒子数 ──────────────────────────────────────────────────────────────
-    # 仓储环境结构规则，500~1500 已经足够；过多粒子只会拖慢收敛
+    # ── 粒子数 ───────────────────────────────────────────────────────────────
     max_particles: 1500
     min_particles: 300
 
     # ── 运动模型噪声 ─────────────────────────────────────────────────────────
-    # alpha1/2 控制旋转引起的位置/角度噪声，alpha3/4 控制平移引起的噪声
-    # 仓储 AGV 走直线为主，平移噪声适当调小
     alpha1: 0.1
     alpha2: 0.1
     alpha3: 0.05
@@ -28,29 +25,23 @@ amcl:
 
     # ── 激光模型 ─────────────────────────────────────────────────────────────
     laser_model_type: "likelihood_field"
-    laser_max_range: 20.0          # 仓储货架一般不超过 20m，不必设 100
+    laser_max_range: 20.0
     laser_min_range: 0.1
     max_beams: 60
-    z_hit: 0.7                     # 提高命中权重，仓储环境墙面明确
+    z_hit: 0.7
     z_short: 0.05
     z_max: 0.05
-    z_rand: 0.2                    # 降低随机噪声权重
-    sigma_hit: 0.15                # 缩小命中高斯宽度，提升定位锐度
+    z_rand: 0.2
+    sigma_hit: 0.15
     lambda_short: 0.1
     do_beamskip: false
 
-    # ── 关键修改：禁止 AMCL 发布 map→odom TF ────────────────────────────────
-    # ekf_map_node 已经在发布这条 TF；若 AMCL 同时发布会导致 TF 树冲突抖动
-    tf_broadcast: false
-
-    # ── AMCL 改为订阅 ekf_map_node 输出的平滑里程，而不是原始 /odom ──────────
-    # 这样粒子滤波的运动模型用的是 EKF 平滑后的位姿，更稳定
-    # （AMCL 内部通过 odom_frame_id 和 base_frame_id 之间的 TF 来获取运动增量，
-    #   只要 ekf_odom_node 正确发布了 odom→base_footprint TF 即可，无需额外配置）
+    # ── TF 发布：AMCL 是 map→odom TF 的唯一来源 ─────────────────────────────
+    # ekf_map_node 已设置 publish_tf=false，不会冲突
+    tf_broadcast: true
 
     # ── 初始位姿 ─────────────────────────────────────────────────────────────
-    # set_initial_pose=true 时 AMCL 以此为粒子初始散布中心
-    # 建议与机器人实际起始位置一致；如果用 ekf 已经有初始位姿也可以不设
+    # apriltag_relocator 会通过 /initialpose 定期更新，这里只是启动时的初始值
     set_initial_pose: true
     initial_pose:
       x: 0.0
@@ -58,10 +49,9 @@ amcl:
       z: 0.0
       yaw: 0.0
 
-    # ── 自适应重采样（KLD） ──────────────────────────────────────────────────
-    # 收敛后自动减少粒子数，降低 CPU 负担
-    update_min_d: 0.1              # 平移超过 0.1m 才更新
-    update_min_a: 0.1              # 旋转超过 0.1rad 才更新
+    # ── 自适应重采样 ─────────────────────────────────────────────────────────
+    update_min_d: 0.1
+    update_min_a: 0.1
     resample_interval: 2
     recovery_alpha_slow: 0.001
     recovery_alpha_fast: 0.1
@@ -176,7 +166,7 @@ bt_navigator:
     use_sim_time: true
     global_frame: map
     robot_base_frame: base_footprint
-    odom_topic: /odometry/filtered   # 使用 EKF 平滑后的里程
+    odom_topic: /odometry/filtered
     default_nav_to_pose_bt_xml: "/opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml"
     default_nav_through_poses_bt_xml: "/opt/ros/humble/share/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml"
     plugin_lib_names:
@@ -228,7 +218,7 @@ velocity_smoother:
     min_velocity: [-0.5, 0.0, -1.0]
     max_accel: [2.5, 0.0, 3.2]
     max_decel: [-2.5, 0.0, -3.2]
-    odom_topic: /odometry/filtered   # 使用 EKF 平滑后的里程
+    odom_topic: /odometry/filtered
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0
