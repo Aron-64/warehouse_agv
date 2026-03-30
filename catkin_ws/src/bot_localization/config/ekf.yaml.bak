@@ -1,0 +1,60 @@
+ekf_filter_node:
+  ros__parameters:
+    frequency: 50.0
+    sensor_timeout: 1.5
+    two_d_mode: true
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_footprint
+    world_frame: map
+
+    use_sim_time: true
+    publish_tf: true
+
+    odom0: /odom
+    odom0_config: [false, false, false,
+                   false, false, false,
+                   true,  false, false,
+                   false, false, true,
+                   false, false, false]
+    odom0_queue_size: 10
+    odom0_nodelay: true
+
+    imu0: /imu
+    imu0_config: [false, false, false,
+                  false, false, false,
+                  false, false, false,
+                  false, false, true,    # 只用 vyaw，角速度噪声小可信
+                  false, false, false]   # 线加速度坚决关闭，bias=0.1太大
+    imu0_queue_size: 20
+    imu0_nodelay: true
+    imu0_remove_gravitational_acceleration: true
+
+    pose0: /apriltag_pose
+    pose0_config: [true,  true,  false,
+                   false, false, true,
+                   false, false, false,
+                   false, false, false,
+                   false, false, false]
+    pose0_differential: false
+    pose0_relative: false
+    pose0_queue_size: 2
+    pose0_nodelay: true
+
+    # 根据真实噪声参数计算的过程噪声
+    # vyaw 对应角速度 stddev=2e-4，方差=(2e-4)²=4e-8，适当放大给余量
+    process_noise_covariance: [0.02,  0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.02,  0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.001, 0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.01,   0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0001, 0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0001, 0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0,
+                               0.0,   0.0,   0.0, 0.0, 0.0, 0.0,   0.0,    0.0,    0.0, 0.0, 0.0,    0.0, 0.0, 0.0, 0.0]
