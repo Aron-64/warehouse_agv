@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find bot_description)/urdf/robot/common_inertia.urdf.xacro"/>
+    
+    <xacro:macro name="imu_xacro" params="xyz">
+        <!-- 机器人IMU部件，惯性测量传感器 -->
+        <link name="imu_link">
+            <!-- 传感器的视觉描述 -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <!-- 立方体长0.02m，宽0.02m，高0.02m -->
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+                <material name="red">
+                    <color rgba="1 0 0 1"/>
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <!-- 立方体长0.02m，宽0.02m，高0.02m -->
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+                <material name="red">
+                    <color rgba="1 0 0 1"/>
+                </material>
+            </collision>
+            <xacro:box_inertia m="0.01" w="0.02" h="0.02" d="0.02"/>
+        </link>
+
+        <!-- 连接机器人主体和IMU传感器 -->
+        <joint name="imu_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="imu_link"/>
+            <origin xyz="${xyz}" rpy="0 0 0"/>
+        </joint>
+    </xacro:macro>
+</robot>

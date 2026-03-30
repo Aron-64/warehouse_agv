@@ -1,0 +1,46 @@
+running egg_info
+creating ../../build/bot_apriltag/bot_apriltag.egg-info
+writing ../../build/bot_apriltag/bot_apriltag.egg-info/PKG-INFO
+writing dependency_links to ../../build/bot_apriltag/bot_apriltag.egg-info/dependency_links.txt
+writing entry points to ../../build/bot_apriltag/bot_apriltag.egg-info/entry_points.txt
+writing requirements to ../../build/bot_apriltag/bot_apriltag.egg-info/requires.txt
+writing top-level names to ../../build/bot_apriltag/bot_apriltag.egg-info/top_level.txt
+writing manifest file '../../build/bot_apriltag/bot_apriltag.egg-info/SOURCES.txt'
+reading manifest file '../../build/bot_apriltag/bot_apriltag.egg-info/SOURCES.txt'
+writing manifest file '../../build/bot_apriltag/bot_apriltag.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build
+creating /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib
+creating /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag
+copying bot_apriltag/__init__.py -> /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag
+copying bot_apriltag/utils.py -> /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag
+copying bot_apriltag/apriltag_localizer.py -> /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag
+copying bot_apriltag/apriltag_detector.py -> /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag
+running install
+running install_lib
+creating /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag
+copying /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag/__init__.py -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag
+copying /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag/utils.py -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag
+copying /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag/apriltag_localizer.py -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag
+copying /home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/build/lib/bot_apriltag/apriltag_detector.py -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag
+byte-compiling /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/utils.py to utils.cpython-310.pyc
+byte-compiling /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/apriltag_localizer.py to apriltag_localizer.cpython-310.pyc
+byte-compiling /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/apriltag_detector.py to apriltag_detector.cpython-310.pyc
+running install_data
+creating /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/ament_index
+creating /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/ament_index/resource_index
+creating /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/ament_index/resource_index/packages
+copying resource/bot_apriltag -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/ament_index/resource_index/packages
+copying package.xml -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag
+creating /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/launch
+copying launch/apriltag.launch.py -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/launch
+creating /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/config
+copying config/tag_map.yaml -> /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/config
+running install_egg_info
+Copying ../../build/bot_apriltag/bot_apriltag.egg-info to /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag-0.0.0-py3.10.egg-info
+running install_scripts
+Installing apriltag_detector script to /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/bot_apriltag
+Installing apriltag_localizer script to /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/bot_apriltag
+writing list of installed files to '/home/agv/Desktop/catkin/catkin_ws/build/bot_apriltag/install.log'

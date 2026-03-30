@@ -1,0 +1,42 @@
+amcl:
+  ros__parameters:
+    use_sim_time: true
+    transform_tolerance: 5.0
+
+    # 坐标系
+    base_frame_id: base_footprint
+    odom_frame_id: odom
+    global_frame_id: map
+
+    # 话题
+    scan_topic: /scan
+    odom_topic: /odometry/filtered
+
+    # 粒子滤波 —— 降低粒子数，减轻计算压力
+    min_particles: 200
+    max_particles: 1000      # 原 2000 → 1000
+    kld_err: 0.05
+    kld_z: 0.99
+    update_min_d: 0.2
+    update_min_a: 0.2
+    resample_interval: 1
+
+    # 激光模型 —— 减少每帧采样射线数
+    laser_model_type: likelihood_field
+    laser_max_range: 20.0    # 仓库场景不需要 100m
+    laser_min_range: 0.1
+    laser_max_beams: 30      # 原 60 → 30，计算量减半
+
+    # 运动模型
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.1
+
+    # 初始位姿 —— 扁平参数格式
+    set_initial_pose: true
+    initial_pose_x: 0.0
+    initial_pose_y: 0.0
+    initial_pose_z: 0.0
+    initial_pose_yaw: 0.0

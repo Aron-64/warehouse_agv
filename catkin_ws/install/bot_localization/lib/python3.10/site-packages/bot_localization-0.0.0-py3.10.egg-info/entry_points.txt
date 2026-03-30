@@ -1,0 +1,3 @@
+[console_scripts]
+apriltag_to_pose_node = bot_localization.apriltag_to_pose_node:main
+

@@ -1,0 +1,9 @@
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/uninstall.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/bot_gazebo_uninstall.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/test.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/edit_cache.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/rebuild_cache.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/list_install_components.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/install.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/install/local.dir
+/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo/CMakeFiles/install/strip.dir

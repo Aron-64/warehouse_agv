@@ -1,0 +1,21 @@
+[2.080s] Invoking command in '/home/agv/Desktop/catkin/catkin_ws/src/bot_localization': PYTHONPATH=/home/agv/Desktop/catkin/catkin_ws/build/bot_localization/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/bot_localization build --build-base /home/agv/Desktop/catkin/catkin_ws/build/bot_localization/build install --record /home/agv/Desktop/catkin/catkin_ws/build/bot_localization/install.log --single-version-externally-managed install_data
+[2.494s] running egg_info
+[2.495s] writing ../../build/bot_localization/bot_localization.egg-info/PKG-INFO
+[2.495s] writing dependency_links to ../../build/bot_localization/bot_localization.egg-info/dependency_links.txt
+[2.496s] writing entry points to ../../build/bot_localization/bot_localization.egg-info/entry_points.txt
+[2.496s] writing requirements to ../../build/bot_localization/bot_localization.egg-info/requires.txt
+[2.497s] writing top-level names to ../../build/bot_localization/bot_localization.egg-info/top_level.txt
+[2.502s] reading manifest file '../../build/bot_localization/bot_localization.egg-info/SOURCES.txt'
+[2.506s] writing manifest file '../../build/bot_localization/bot_localization.egg-info/SOURCES.txt'
+[2.506s] running build
+[2.506s] running build_py
+[2.506s] running install
+[2.507s] running install_lib
+[2.507s] running install_data
+[2.507s] running install_egg_info
+[2.510s] removing '/home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages/bot_localization-0.0.0-py3.10.egg-info' (and everything under it)
+[2.513s] Copying ../../build/bot_localization/bot_localization.egg-info to /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages/bot_localization-0.0.0-py3.10.egg-info
+[2.514s] running install_scripts
+[2.543s] Installing apriltag_to_pose_node script to /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/bot_localization
+[2.545s] writing list of installed files to '/home/agv/Desktop/catkin/catkin_ws/build/bot_localization/install.log'
+[2.597s] Invoked command in '/home/agv/Desktop/catkin/catkin_ws/src/bot_localization' returned '0': PYTHONPATH=/home/agv/Desktop/catkin/catkin_ws/build/bot_localization/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/bot_localization build --build-base /home/agv/Desktop/catkin/catkin_ws/build/bot_localization/build install --record /home/agv/Desktop/catkin/catkin_ws/build/bot_localization/install.log --single-version-externally-managed install_data
