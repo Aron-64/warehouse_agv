@@ -1,12 +1,13 @@
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/__init__.py
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/apriltag_localizer.py
+/home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/apriltag_relocalizer.py
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/apriltag_detector.py
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/__pycache__/__init__.cpython-310.pyc
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/__pycache__/apriltag_localizer.cpython-310.pyc
+/home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/__pycache__/apriltag_relocalizer.cpython-310.pyc
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag/__pycache__/apriltag_detector.cpython-310.pyc
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/ament_index/resource_index/packages/bot_apriltag
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/package.xml
-/home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/launch/apriltag.launch.py
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/share/bot_apriltag/config/tag_map.yaml
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag-0.0.0-py3.10.egg-info/top_level.txt
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag-0.0.0-py3.10.egg-info/zip-safe
@@ -17,3 +18,4 @@
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/python3.10/site-packages/bot_apriltag-0.0.0-py3.10.egg-info/PKG-INFO
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/bot_apriltag/apriltag_detector
 /home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/bot_apriltag/apriltag_localizer
+/home/agv/Desktop/catkin/catkin_ws/install/bot_apriltag/lib/bot_apriltag/apriltag_relocalizer

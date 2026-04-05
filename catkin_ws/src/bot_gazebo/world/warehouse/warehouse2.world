@@ -1626,7 +1626,7 @@
     </light>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>0.580772 -4.77532 1.45259 0 0.373797 -1.75182</pose>
+        <pose>0.601009 7.51806 5.36196 0 0.649797 -1.63582</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -2257,45 +2257,45 @@
       </spot>
     </light>
     <state world_name='default'>
-      <sim_time>622 235000000</sim_time>
-      <real_time>67 153238476</real_time>
-      <wall_time>1774847191 846173966</wall_time>
-      <iterations>66564</iterations>
+      <sim_time>917 462000000</sim_time>
+      <real_time>348 822939232</real_time>
+      <wall_time>1775369545 88272772</wall_time>
+      <iterations>295227</iterations>
       <model name='apriltag_0'>
-        <pose>2.69086 -2.96706 0.325606 0 -1.56406 0</pose>
+        <pose>2.78191 -1.232 0.289752 0 -1.56873 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>2.69086 -2.96706 0.325606 0 -1.56406 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='apriltag_0_0'>
-        <pose>-1.12666 -7.86064 0.319439 0 1.56703 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>-1.12666 -7.86064 0.319439 0 1.56703 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='apriltag_0_1'>
-        <pose>-1.62181 1.26777 0.288559 1.56386 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>-1.62181 1.26777 0.288559 1.56386 -0 0</pose>
+          <pose>2.78191 -1.232 0.289752 0 -1.56873 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='apriltag_1'>
-        <pose>2.69766 0.545431 0.394019 3.14159 -1.55635 3.14159</pose>
+        <pose>2.7886 -4.83957 0.337347 0 -1.56657 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>2.69766 0.545431 0.394019 3.14159 -1.55635 3.14159</pose>
+          <pose>2.7886 -4.83957 0.337347 0 -1.56657 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='apriltag_2'>
+        <pose>-1.13363 -5.20752 0.297011 0 1.56917 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>-1.13363 -5.20752 0.297011 0 1.56917 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='apriltag_3'>
+        <pose>-1.17444 -1.26784 0.322428 0 1.56556 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>-1.17444 -1.26784 0.322428 0 1.56556 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2402,10 +2402,10 @@
         </link>
       </model>
       <model name='aws_robomaker_warehouse_ClutteringC_01_031'>
-        <pose>-1.57368 2.30199 -0.015663 0 0 -3.13319</pose>
+        <pose>-2.06861 -1.23539 -0.015663 0 0 -3.13319</pose>
         <scale>1 1 1</scale>
         <link name='aws_robomaker_warehouse_ClutteringC_01::link'>
-          <pose>-1.57368 2.30199 -0.015663 0 0 -3.13319</pose>
+          <pose>-2.06861 -1.23539 -0.015663 0 0 -3.13319</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2422,10 +2422,10 @@
         </link>
       </model>
       <model name='aws_robomaker_warehouse_ClutteringD_01_005'>
-        <pose>-1.63468 -7.81181 -0.319559 0 -0 0</pose>
+        <pose>-1.63468 -4.97732 -0.319559 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='aws_robomaker_warehouse_ClutteringD_01::link'>
-          <pose>-1.63468 -7.81181 -0.319559 0 -0 0</pose>
+          <pose>-1.63468 -4.97732 -0.319559 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2552,41 +2552,41 @@
         </link>
       </model>
       <model name='robot'>
-        <pose>0.002654 -0.034583 0.001 0 0 -0.002444</pose>
+        <pose>0.004174 -0.045686 0.001 0 -0 -0.005577</pose>
         <scale>1 1 1</scale>
         <link name='base_footprint'>
-          <pose>0.002654 -0.034583 0.001 0 0 -0.002444</pose>
-          <velocity>4e-06 -0.000102 -3e-06 -0.000135 -0 1.5e-05</velocity>
-          <acceleration>-0.000455 -0.022458 -0.002737 -1.10375 0.002504 -0.046989</acceleration>
-          <wrench>-0.000664 -0.032789 -0.003996 0 -0 0</wrench>
+          <pose>0.004174 -0.045686 0.001 0 -0 -0.005577</pose>
+          <velocity>5e-06 -2.3e-05 -3e-06 0.000566 -4e-06 6.1e-05</velocity>
+          <acceleration>-0.001609 -0.209058 -0.003246 1.41691 -0.010632 0.259499</acceleration>
+          <wrench>-0.002349 -0.305225 -0.004739 0 -0 0</wrench>
         </link>
         <link name='left_wheel_link'>
-          <pose>0.002899 0.065416 0.032 6e-06 -1.9e-05 -0.002444</pose>
-          <velocity>3e-06 -8.3e-05 9e-06 0.002541 6.9e-05 2.1e-05</velocity>
-          <acceleration>0.004346 -0.080872 -0.087991 1.5731 0.071381 -0.041281</acceleration>
-          <wrench>0.000869 -0.016174 -0.017598 0 -0 0</wrench>
+          <pose>0.004732 0.054313 0.032 3e-06 -0.000661 -0.005577</pose>
+          <velocity>-0 -5.2e-05 8.6e-05 0.001618 -5.1e-05 6e-05</velocity>
+          <acceleration>-0.026453 -0.126942 0.171371 2.46863 -0.05563 0.258766</acceleration>
+          <wrench>-0.005291 -0.025388 0.034274 0 -0 0</wrench>
         </link>
         <link name='right_wheel_link'>
-          <pose>0.00241 -0.134583 0.032 7e-06 1.3e-05 -0.002444</pose>
-          <velocity>6e-06 -8.7e-05 6.5e-05 0.002688 0.000177 2e-06</velocity>
-          <acceleration>-0.004985 -0.085081 0.161767 1.71946 0.17971 -0.060278</acceleration>
-          <wrench>-0.000997 -0.017016 0.032353 0 -0 0</wrench>
+          <pose>0.003616 -0.145684 0.032 5e-06 0.000731 -0.005577</pose>
+          <velocity>1.1e-05 -4.9e-05 -8e-06 0.001538 0.000318 5.2e-05</velocity>
+          <acceleration>0.024816 -0.124484 -0.09333 2.38873 0.313565 0.249273</acceleration>
+          <wrench>0.004963 -0.024897 -0.018666 0 -0 0</wrench>
         </link>
       </model>
       <light name='Warehouse_CeilingLight_003'>
         <pose>0 0 9 0 -0 0</pose>
       </light>
       <light name='user_spot_light_0'>
-        <pose>2.29381 0.506243 1.28819 0 -0.4333 0</pose>
+        <pose>2.20785 -1.27973 1.24842 0 -0.4333 0</pose>
       </light>
       <light name='user_spot_light_1'>
-        <pose>2.18272 -3.09478 1.32631 0 -0.482324 0</pose>
+        <pose>2.06355 -4.89492 1.26392 0 -0.482324 0</pose>
       </light>
       <light name='user_spot_light_2'>
-        <pose>-0.719153 -7.86751 1.30353 0 0.373633 0</pose>
+        <pose>-0.62079 -5.14187 1.26497 0 0.373633 0</pose>
       </light>
       <light name='user_spot_light_3'>
-        <pose>-1.60448 0.926579 1.32497 0.17418 -0 0</pose>
+        <pose>-0.771995 -1.45192 1.38913 0.17487 0.088383 0.015593</pose>
       </light>
     </state>
     <model name='apriltag_1'>
@@ -2624,23 +2624,6 @@
         <falloff>1</falloff>
       </spot>
     </light>
-    <model name='apriltag_0_0'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://apriltag_0/meshes/apriltag_0.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-0.8702 -7.86064 0 0 -0 0</pose>
-    </model>
     <light name='user_spot_light_2' type='spot'>
       <pose>-0.932832 -7.86751 1 0 -0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -2659,23 +2642,6 @@
         <falloff>1</falloff>
       </spot>
     </light>
-    <model name='apriltag_0_1'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://apriltag_0/meshes/apriltag_0.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-1.62181 1.01664 0 0 -0 0</pose>
-    </model>
     <light name='user_spot_light_3' type='spot'>
       <pose>-1.60448 1.08918 1 0 -0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -2694,5 +2660,39 @@
         <falloff>1</falloff>
       </spot>
     </light>
+    <model name='apriltag_2'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://apriltag_2/meshes/apriltag_2.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>-0.898931 -5.20752 0 0 -0 0</pose>
+    </model>
+    <model name='apriltag_3'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://apriltag_3/meshes/apriltag_3.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>-0.9171 -1.26784 0 0 -0 0</pose>
+    </model>
   </world>
 </sdf>

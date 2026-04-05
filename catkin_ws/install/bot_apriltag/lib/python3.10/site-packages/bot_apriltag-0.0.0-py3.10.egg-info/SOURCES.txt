@@ -11,8 +11,8 @@ setup.py
 bot_apriltag/__init__.py
 bot_apriltag/apriltag_detector.py
 bot_apriltag/apriltag_localizer.py
+bot_apriltag/apriltag_relocalizer.py
 config/tag_map.yaml
-launch/apriltag.launch.py
 resource/bot_apriltag
 test/test_copyright.py
 test/test_flake8.py

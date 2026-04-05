@@ -9,9 +9,7 @@ setup.py
 ../../build/bot_localization/bot_localization.egg-info/top_level.txt
 ../../build/bot_localization/bot_localization.egg-info/zip-safe
 bot_localization/__init__.py
-config/amcl.yaml
 config/ekf.yaml
-launch/amcl.launch.py
 launch/ekf.launch.py
 maps/map.pgm
 maps/map.yaml

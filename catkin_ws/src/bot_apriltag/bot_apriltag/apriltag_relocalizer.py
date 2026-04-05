@@ -16,6 +16,12 @@ apriltag_relocator.py
       - MED   (cov_x < 0.08)：单个中距离 tag     → 使用默认阈值
       - LOW   (cov_x >= 0.08)：tag 较远或单个远距  → 阈值放宽、冷却延长，保守校正
 
+  BUG FIX：
+    转发给 AMCL 的 /initialpose 协方差设置了下界，防止 EKF 融合后协方差
+    过小导致 AMCL 粒子完全收敛到单点、激光雷达无法再做修正。
+      - cov_x, cov_y  最小值：0.10 m²
+      - cov_yaw       最小值：0.05 rad²（≈ 4°）
+
 参数（均可通过 ROS2 参数覆盖）：
   position_threshold  : 触发重定位的位置偏差基准阈值（米），默认 0.3
   yaw_threshold       : 触发重定位的朝向偏差基准阈值（弧度），默认 0.15（≈8.6°）
@@ -23,6 +29,8 @@ apriltag_relocator.py
   tag_timeout_sec     : 多久没收到 apriltag_pose 就认为 tag 不可见（秒），默认 1.0
   cov_high_threshold  : cov_x 低于此值视为 HIGH 可信度，默认 0.02
   cov_low_threshold   : cov_x 高于此值视为 LOW  可信度，默认 0.08
+  initialpose_min_cov_xy  : 发给 AMCL 的位置协方差下界，默认 0.10
+  initialpose_min_cov_yaw : 发给 AMCL 的朝向协方差下界，默认 0.05
 """
 
 import math
@@ -44,17 +52,11 @@ _GREY   = '\033[90m'
 _BLUE   = '\033[94m'
 
 # ── 可信度等级 ─────────────────────────────────────────────
-#   HIGH : 多个近距离 tag 融合，协方差很小
-#   MED  : 单个中距离 tag
-#   LOW  : 单个远距离 tag，协方差较大
 _TRUST_HIGH = 'HIGH'
 _TRUST_MED  = 'MED'
 _TRUST_LOW  = 'LOW'
 
-# 各等级对应的阈值缩放系数（相对于基准值）
-# HIGH → 阈值收紧 0.5x、冷却缩短 0.4x，更积极校正
-# MED  → 使用基准值
-# LOW  → 阈值放宽 1.5x、冷却延长 1.5x，保守校正
+# 各等级对应的阈值缩放系数
 _TRUST_SCALE = {
     _TRUST_HIGH: {'pos': 0.5, 'yaw': 0.5, 'cool': 0.4},
     _TRUST_MED:  {'pos': 1.0, 'yaw': 1.0, 'cool': 1.0},
@@ -72,30 +74,33 @@ class AprilTagRelocator(Node):
         ])
 
         # ── 可调参数 ──────────────────────────────────────────
-        self.declare_parameter('position_threshold', 0.3)
-        self.declare_parameter('yaw_threshold',      0.15)
-        self.declare_parameter('cooldown_sec',        5.0)
-        self.declare_parameter('tag_timeout_sec',     1.0)
-        self.declare_parameter('cov_high_threshold',  0.02)  # cov_x < 此值 → HIGH
-        self.declare_parameter('cov_low_threshold',   0.08)  # cov_x > 此值 → LOW
+        self.declare_parameter('position_threshold',      0.3)
+        self.declare_parameter('yaw_threshold',           0.15)
+        self.declare_parameter('cooldown_sec',            5.0)
+        self.declare_parameter('tag_timeout_sec',         1.0)
+        self.declare_parameter('cov_high_threshold',      0.02)
+        self.declare_parameter('cov_low_threshold',       0.08)
+        # BUG FIX: 新增协方差下界参数，防止 AMCL 粒子过度收敛
+        self.declare_parameter('initialpose_min_cov_xy',  0.10)
+        self.declare_parameter('initialpose_min_cov_yaw', 0.05)
 
-        self._pos_thr      = self.get_parameter('position_threshold').value
-        self._yaw_thr      = self.get_parameter('yaw_threshold').value
-        self._cooldown     = self.get_parameter('cooldown_sec').value
-        self._tag_timeout  = self.get_parameter('tag_timeout_sec').value
-        self._cov_high_thr = self.get_parameter('cov_high_threshold').value
-        self._cov_low_thr  = self.get_parameter('cov_low_threshold').value
+        self._pos_thr          = self.get_parameter('position_threshold').value
+        self._yaw_thr          = self.get_parameter('yaw_threshold').value
+        self._cooldown         = self.get_parameter('cooldown_sec').value
+        self._tag_timeout      = self.get_parameter('tag_timeout_sec').value
+        self._cov_high_thr     = self.get_parameter('cov_high_threshold').value
+        self._cov_low_thr      = self.get_parameter('cov_low_threshold').value
+        self._min_cov_xy       = self.get_parameter('initialpose_min_cov_xy').value
+        self._min_cov_yaw      = self.get_parameter('initialpose_min_cov_yaw').value
 
         # ── 状态 ──────────────────────────────────────────────
         self._ekf_map_pose: PoseWithCovarianceStamped | None = None
         self._amcl_pose:    PoseWithCovarianceStamped | None = None
-        self._last_tag_time:  float = 0.0
+        self._last_tag_time:   float = 0.0
         self._last_reloc_time: float = 0.0
-        # 最近一次 apriltag_pose 的 x 协方差（用于可信度判断）
-        self._last_tag_cov_x: float = 9999.0
+        self._last_tag_cov_x:  float = 9999.0
 
         # ── 订阅 ──────────────────────────────────────────────
-        # ekf_map_node 输出（Odometry 类型，remapped 到 /ekf_map_pose）
         self.create_subscription(
             Odometry,
             '/odometry/filtered_map',
@@ -103,7 +108,6 @@ class AprilTagRelocator(Node):
             10
         )
 
-        # AMCL 当前估计位姿（用于计算偏差）
         self.create_subscription(
             PoseWithCovarianceStamped,
             '/amcl_pose',
@@ -111,7 +115,6 @@ class AprilTagRelocator(Node):
             10
         )
 
-        # AprilTag 原始位姿（仅用于判断 tag 是否可见，不处理内容）
         self.create_subscription(
             PoseWithCovarianceStamped,
             '/apriltag_pose',
@@ -135,6 +138,7 @@ class AprilTagRelocator(Node):
             f'║   cooldown={self._cooldown:.1f}s  '
             f'tag_timeout={self._tag_timeout:.1f}s        ║\n'
             f'║   cov→HIGH<{self._cov_high_thr}  LOW>{self._cov_low_thr}       ║\n'
+            f'║   initialpose cov floor: xy={self._min_cov_xy}  yaw={self._min_cov_yaw} ║\n'
             f'╚══════════════════════════════════════════════╝'
             f'{_RESET}'
         )
@@ -142,12 +146,9 @@ class AprilTagRelocator(Node):
     # ──────────────────────────────────────────────────────── #
 
     def _tag_visible_cb(self, msg: PoseWithCovarianceStamped):
-        """
-        记录最近一次收到 tag 的时间，同时保存协方差 cov[0]（x 方差）。
-        apriltag_localizer 融合多 tag 后，tag 越多越近 → cov[0] 越小。
-        """
-        self._last_tag_time   = self._now()
-        self._last_tag_cov_x  = msg.pose.covariance[0]  # 协方差矩阵 [0,0]
+        """记录最近一次收到 tag 的时间，同时保存协方差 cov[0]（x 方差）。"""
+        self._last_tag_time  = self._now()
+        self._last_tag_cov_x = msg.pose.covariance[0]
 
     def _trust_level(self) -> str:
         """根据最近一次 apriltag_pose 的 x 协方差判断可信度等级。"""
@@ -165,9 +166,8 @@ class AprilTagRelocator(Node):
     def _ekf_map_cb(self, msg: Odometry):
         """
         收到 ekf_map_node 的输出后，判断是否需要触发重定位。
-        阈值和冷却时间根据 AprilTag 可信度等级动态缩放：
-          HIGH（多近距tag）→ 更积极触发
-          LOW （单远距tag）→ 更保守触发
+
+        BUG FIX: 转发给 AMCL 的协方差设置下界，防止粒子过度收敛。
         """
         now = self._now()
 
@@ -179,13 +179,13 @@ class AprilTagRelocator(Node):
             return
 
         # ── 根据可信度等级缩放阈值 ────────────────────────────────
-        trust   = self._trust_level()
-        scale   = _TRUST_SCALE[trust]
+        trust    = self._trust_level()
+        scale    = _TRUST_SCALE[trust]
         pos_thr  = self._pos_thr  * scale['pos']
         yaw_thr  = self._yaw_thr  * scale['yaw']
         cooldown = self._cooldown * scale['cool']
 
-        # ── 条件 2：冷却时间（已按可信度缩放）───────────────────────
+        # ── 条件 2：冷却时间 ──────────────────────────────────────
         if now - self._last_reloc_time < cooldown:
             return
 
@@ -194,6 +194,13 @@ class AprilTagRelocator(Node):
         ekf_pose.header          = msg.header
         ekf_pose.pose.pose       = msg.pose.pose
         ekf_pose.pose.covariance = list(msg.pose.covariance)
+
+        # BUG FIX: 对发给 AMCL 的协方差施加下界
+        # EKF 融合后协方差可能极小，导致 AMCL 粒子完全收敛到单点，
+        # 使激光雷达无法再做有效修正。下界保证 AMCL 保留足够的不确定性。
+        ekf_pose.pose.covariance[0]  = max(ekf_pose.pose.covariance[0],  self._min_cov_xy)   # x
+        ekf_pose.pose.covariance[7]  = max(ekf_pose.pose.covariance[7],  self._min_cov_xy)   # y
+        ekf_pose.pose.covariance[35] = max(ekf_pose.pose.covariance[35], self._min_cov_yaw)  # yaw
 
         # ── 条件 3：与 AMCL 当前位姿偏差超过阈值才触发 ──────────────
         if self._amcl_pose is not None:
@@ -208,7 +215,6 @@ class AprilTagRelocator(Node):
                 )
                 return
 
-            # 根据可信度选择日志颜色
             log_color = _GREEN if trust == _TRUST_HIGH else (
                 _YELLOW if trust == _TRUST_MED else _CYAN)
             self.get_logger().info(
@@ -237,7 +243,9 @@ class AprilTagRelocator(Node):
         self.get_logger().info(
             f'{_GREEN}'
             f'[Relocator] /initialpose published: '
-            f'x={x:+.3f}  y={y:+.3f}  yaw={math.degrees(yaw):+.1f}°'
+            f'x={x:+.3f}  y={y:+.3f}  yaw={math.degrees(yaw):+.1f}°  '
+            f'cov_xy={ekf_pose.pose.covariance[0]:.3f}  '
+            f'cov_yaw={ekf_pose.pose.covariance[35]:.3f}'
             f'{_RESET}'
         )
 

@@ -13,8 +13,6 @@ setup(
 
         ('share/' + package_name + '/launch', ['launch/ekf.launch.py']),
         ('share/' + package_name + '/config', ['config/ekf.yaml']),
-        ('share/' + package_name + '/launch', ['launch/amcl.launch.py']),
-        ('share/' + package_name + '/config', ['config/amcl.yaml']),
         ('share/' + package_name + '/maps', ['maps/map.yaml']),
         ('share/' + package_name + '/maps', ['maps/map.pgm']),
     ],

@@ -32,6 +32,9 @@
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_0/apriltag_0.sdf
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_0/meshes/apriltag_0.dae
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_0/model.config
+/home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_2/meshes/apriltag_2.dae
+/home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_2/model.config
+/home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_2/apriltag_2.sdf
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/aws_robomaker_warehouse_WallB_01/model.sdf
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/aws_robomaker_warehouse_WallB_01/meshes/aws_robomaker_warehouse_WallB_01_collision.DAE
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/aws_robomaker_warehouse_WallB_01/meshes/aws_robomaker_warehouse_WallB_01_visual.DAE
@@ -118,6 +121,9 @@
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/aws_robomaker_warehouse_RoofB_01/meshes/aws_robomaker_warehouse_RoofB_01_visual.DAE
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/aws_robomaker_warehouse_RoofB_01/materials/textures/aws_robomaker_warehouse_RoofB_01.png
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/aws_robomaker_warehouse_RoofB_01/model.config
+/home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_3/apriltag_3.sdf
+/home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_3/meshes/apriltag_3.dae
+/home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/warehouse/models/apriltag_3/model.config
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/test_april/test2.world
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/test_april/test.world
 /home/agv/Desktop/catkin/catkin_ws/install/bot_gazebo/share/bot_gazebo/world/test_april/models/apriltag_0/apriltag_0.sdf
