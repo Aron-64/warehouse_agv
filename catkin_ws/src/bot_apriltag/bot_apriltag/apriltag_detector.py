@@ -71,9 +71,10 @@ class AprilTagDetector(Node):
 
         self.get_logger().info(
             f'\n{_BLUE}{_BOLD}'
-            f'╔══════════════════════════════════╗\n'
-            f'║    AprilTag Detector Started     ║\n'
-            f'╚══════════════════════════════════╝'
+            f'╔══════════════════════════════════════════════════╗\n'
+            f'║    AprilTag Detector Started                     ║\n'
+            f'║    PnP frame : camera_optical_link               ║\n'
+            f'╚══════════════════════════════════════════════════╝'
             f'{_RESET}'
         )
 
@@ -151,7 +152,7 @@ class AprilTagDetector(Node):
             success, rvec, tvec = cv2.solvePnP(
                 object_points, image_points,
                 self.camera_matrix, self.dist_coeffs,
-                flags=cv2.SOLVEPNP_EPNP   
+                flags=cv2.SOLVEPNP_EPNP
             )
 
             if success:
@@ -160,7 +161,7 @@ class AprilTagDetector(Node):
                 self.get_logger().info(
                     f'{_CYAN}'
                     f'\n│  Tag ID : {tag_id}\n'
-                    f'│  Pos    : x={tx:+.3f}  y={ty:+.3f}  z={tz:+.3f}  (m)\n'
+                    f'│  Pos(optical): x={tx:+.3f}  y={ty:+.3f}  z={tz:+.3f}  (m)\n'
                     f'│  Dist   : {dist:.3f} m'
                     f'{_RESET}'
                 )
@@ -179,7 +180,12 @@ class AprilTagDetector(Node):
     # ------------------------------------------------------------------ #
 
     def _publish_tag(self, r, msg):
-        """对单个检测结果做 PnP 并发布 TransformStamped。"""
+        """对单个检测结果做 PnP 并发布 TransformStamped。
+
+        PnP 在图像（光学）坐标系下求解，结果天然属于 camera_optical_link 坐标系。
+        frame_id 声明为 camera_optical_link，localizer 侧查询
+        camera_optical_link → base_footprint 的 TF 才能正确对齐。
+        """
 
         tag_id        = r.tag_id
         half_size     = self.tag_size / 2.0
@@ -210,7 +216,10 @@ class AprilTagDetector(Node):
 
         t                          = TransformStamped()
         t.header.stamp             = msg.header.stamp
-        t.header.frame_id          = 'camera_link'
+        # 修复：PnP 在光学坐标系下求解，frame_id 必须为 camera_optical_link
+        # 原来错误地写成 camera_link，导致跳过了 camera_optical_link→camera_link
+        # 之间约 -90° 的旋转，造成 yaw 误差接近 -90°
+        t.header.frame_id          = 'camera_optical_link'
         t.child_frame_id           = f'tag_{tag_id}'
         t.transform.translation.x  = T[0, 3]
         t.transform.translation.y  = T[1, 3]

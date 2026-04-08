@@ -48,11 +48,11 @@ def main():
     #   点3→点4：从 (-0.97,-1.27) 回到 (2.58,-1.23)，朝向东方 → yaw=0°
     #   点4（终点）：回到起点，朝向南方与出发方向一致 → yaw=-90°
     goal_poses = [
-        make_pose(navigator,  2.581910, -1.232000, yaw_deg=-90.0),
-        make_pose(navigator,  2.588600, -4.839570, yaw_deg=180.0),
-        make_pose(navigator, -0.933630, -5.207520, yaw_deg= 90.0),
-        make_pose(navigator, -0.974440, -1.267840, yaw_deg=  0.0),
-        make_pose(navigator,  2.581910, -1.232000, yaw_deg=-90.0),
+        make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
+        make_pose(navigator,  2.0, -5.0, yaw_deg=180.0),
+        make_pose(navigator, -0.5, -5.0, yaw_deg= 90.0),
+        make_pose(navigator, -0.5, -1.0, yaw_deg=  0.0),
+        make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
     ]
 
     # 发送 waypoint 列表，stop_on_failure=false 已在 nav2_params.yaml 中配置

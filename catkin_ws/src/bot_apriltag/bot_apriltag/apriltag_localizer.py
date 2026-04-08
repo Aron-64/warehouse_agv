@@ -140,43 +140,47 @@ class AprilTagLocalizer(Node):
         根据单个 tag 检测消息，计算机器人在 map 坐标系下的 (x, y, yaw, dist)。
 
         变换链：
-          T_map_base = T_map_tag  ×  T_tag_camera  ×  T_camera_base
+          T_map_base = T_map_tag  ×  T_tag_optical  ×  T_optical_base
 
         其中：
-          T_tag_camera  = inv(T_camera_tag)  —— PnP 输出 T_camera_tag
-          T_camera_base —— TF 查询：target=camera_link, source=base_footprint
-                           即 base_footprint 在 camera_link 坐标系下的表达
+          T_tag_optical  = inv(T_optical_tag)  —— PnP 输出 T_optical_tag
+                           frame_id 已修正为 camera_optical_link
+          T_optical_base —— TF 查询：camera_optical_link → base_footprint
         """
 
         # ── Step 1: map → tag（从 yaml 地图读取）─────────────────
+        # 使用 quaternion_from_euler 确保 ROS 标准 RPY（ZYX）语义
         tag = self.tag_map[tag_id]
-        T_map_tag = tf_transformations.compose_matrix(
-            translate=[tag['x'], tag['y'], tag['z']],
-            angles=[tag['roll'], tag['pitch'], tag['yaw']]
+        quat_map_tag = tf_transformations.quaternion_from_euler(
+            tag['roll'], tag['pitch'], tag['yaw']
         )
+        T_map_tag = tf_transformations.quaternion_matrix(quat_map_tag)
+        T_map_tag[0][3] = tag['x']
+        T_map_tag[1][3] = tag['y']
+        T_map_tag[2][3] = tag['z']
 
-        # ── Step 2: camera → tag（PnP 直接输出，即 T_camera_tag）──
+        # ── Step 2: optical → tag（PnP 输出，即 T_optical_tag）───
         t = msg.transform.translation
         r = msg.transform.rotation
-        T_camera_tag = tf_transformations.quaternion_matrix(
+        T_optical_tag = tf_transformations.quaternion_matrix(
             [r.x, r.y, r.z, r.w]
         )
-        T_camera_tag[0][3] = t.x
-        T_camera_tag[1][3] = t.y
-        T_camera_tag[2][3] = t.z
+        T_optical_tag[0][3] = t.x
+        T_optical_tag[1][3] = t.y
+        T_optical_tag[2][3] = t.z
 
-        # tag → camera = inv(T_camera_tag)
-        T_tag_camera = np.linalg.inv(T_camera_tag)
+        # tag → optical = inv(T_optical_tag)
+        T_tag_optical = np.linalg.inv(T_optical_tag)
 
-        # ── Step 3: camera → base（TF 查询）──────────────────────
-        # BUG FIX: lookup_transform(target_frame, source_frame, ...)
-        #   target = 'camera_link'  → 结果在 camera_link 坐标系下
-        #   source = 'base_footprint' → base_footprint 的位置
-        # 得到 T_camera_base：base_footprint 原点在 camera_link 坐标系中的表达
+        # ── Step 3: optical → base（TF 查询）──────────────────────
+        # 修复：原来查询 camera_link → base_footprint，跳过了
+        # camera_optical_link → camera_link 之间约 -90° 的旋转。
+        # 现在改为查询 camera_optical_link → base_footprint，
+        # 与 detector 发布的 frame_id 完全对齐。
         try:
             tf = self.tf_buffer.lookup_transform(
-                'camera_link',       # target_frame（结果坐标系）
-                'base_footprint',    # source_frame（被查询坐标系）
+                'camera_optical_link',   # target_frame（与PnP坐标系一致）
+                'base_footprint',        # source_frame
                 rclpy.time.Time()
             )
         except Exception as e:
@@ -185,21 +189,21 @@ class AprilTagLocalizer(Node):
 
         tc = tf.transform.translation
         rc = tf.transform.rotation
-        T_camera_base = tf_transformations.quaternion_matrix(
+        T_optical_base = tf_transformations.quaternion_matrix(
             [rc.x, rc.y, rc.z, rc.w]
         )
-        T_camera_base[0][3] = tc.x
-        T_camera_base[1][3] = tc.y
-        T_camera_base[2][3] = tc.z
+        T_optical_base[0][3] = tc.x
+        T_optical_base[1][3] = tc.y
+        T_optical_base[2][3] = tc.z
 
         # ── Step 4: 核心链式计算 ───────────────────────────────────
-        T_map_base = T_map_tag @ T_tag_camera @ T_camera_base
+        T_map_base = T_map_tag @ T_tag_optical @ T_optical_base
 
         x   = T_map_base[0][3]
         y   = T_map_base[1][3]
         yaw = tf_transformations.euler_from_matrix(T_map_base)[2]
 
-        # 用 tag 在相机坐标系下的距离作为可信度依据
+        # 用 tag 在光学坐标系下的距离作为可信度依据
         dist = float(np.linalg.norm([t.x, t.y, t.z]))
 
         return x, y, yaw, dist
