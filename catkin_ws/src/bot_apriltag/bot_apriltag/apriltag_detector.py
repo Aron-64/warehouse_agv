@@ -150,7 +150,8 @@ class AprilTagDetector(Node):
 
             success, rvec, tvec = cv2.solvePnP(
                 object_points, image_points,
-                self.camera_matrix, self.dist_coeffs
+                self.camera_matrix, self.dist_coeffs,
+                flags=cv2.SOLVEPNP_EPNP   
             )
 
             if success:
@@ -192,7 +193,8 @@ class AprilTagDetector(Node):
 
         success, rvec, tvec = cv2.solvePnP(
             object_points, image_points,
-            self.camera_matrix, self.dist_coeffs
+            self.camera_matrix, self.dist_coeffs,
+            flags=cv2.SOLVEPNP_EPNP
         )
 
         if not success:

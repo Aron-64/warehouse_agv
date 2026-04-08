@@ -139,14 +139,13 @@ class AprilTagLocalizer(Node):
         """
         根据单个 tag 检测消息，计算机器人在 map 坐标系下的 (x, y, yaw, dist)。
 
-        变换链（正确推导）：
+        变换链：
           T_map_base = T_map_tag  ×  T_tag_camera  ×  T_camera_base
 
         其中：
-          T_tag_camera  = inv(T_camera_tag)
-              ↑ PnP 输出的是 tag 在 camera 坐标系下的位置，即 T_camera_tag
-          T_camera_base = TF 查询 camera_link → base_footprint
-              ↑ 注意查询方向：source=camera_link, target=base_footprint
+          T_tag_camera  = inv(T_camera_tag)  —— PnP 输出 T_camera_tag
+          T_camera_base —— TF 查询：target=camera_link, source=base_footprint
+                           即 base_footprint 在 camera_link 坐标系下的表达
         """
 
         # ── Step 1: map → tag（从 yaml 地图读取）─────────────────
@@ -169,13 +168,15 @@ class AprilTagLocalizer(Node):
         # tag → camera = inv(T_camera_tag)
         T_tag_camera = np.linalg.inv(T_camera_tag)
 
-        # ── Step 3: camera → base_link（TF 查询）──────────────────
-        #   查询方向：source = camera_link，target = base_footprint
-        #   得到的是 base_footprint 在 camera_link 坐标系下的位置，即 T_camera_base
+        # ── Step 3: camera → base（TF 查询）──────────────────────
+        # BUG FIX: lookup_transform(target_frame, source_frame, ...)
+        #   target = 'camera_link'  → 结果在 camera_link 坐标系下
+        #   source = 'base_footprint' → base_footprint 的位置
+        # 得到 T_camera_base：base_footprint 原点在 camera_link 坐标系中的表达
         try:
             tf = self.tf_buffer.lookup_transform(
-                msg.header.frame_id,   # camera_link（source）
-                'base_footprint',      # base_footprint（target）
+                'camera_link',       # target_frame（结果坐标系）
+                'base_footprint',    # source_frame（被查询坐标系）
                 rclpy.time.Time()
             )
         except Exception as e:

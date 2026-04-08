@@ -1,5 +1,5 @@
 # ============================================================
-#  双 EKF 配置（最终版）
+#  双 EKF 配置
 #
 #  ekf_odom_node : world_frame=odom, publish_tf=true
 #    融合 /odom + /imu
@@ -7,7 +7,7 @@
 #
 #  ekf_map_node  : world_frame=map, publish_tf=false
 #    融合 /odometry/filtered + /apriltag_pose
-#    输出：/ekf_map_pose（供 apriltag_relocator 转发给 AMCL）
+#    输出：/odometry/filtered_map（供 apriltag_relocator 转发给 AMCL）
 #    不发布 TF，map→odom TF 完全由 AMCL 负责
 #
 #  数据流：
@@ -15,11 +15,18 @@
 #        └─→ ekf_odom_node ──→ /odometry/filtered + odom→base_footprint TF
 #                                    │
 #    /apriltag_pose ─────────────────┤
-#                                    └─→ ekf_map_node ──→ /ekf_map_pose
+#                                    └─→ ekf_map_node ──→ /odometry/filtered_map
 #                                                              │
 #                                              apriltag_relocator ──→ /initialpose → AMCL
 #
 #    /scan ──→ AMCL (tf_broadcast=true) ──→ map→odom TF（唯一来源）
+#
+#  BUG FIX：
+#    ekf_map_node 新增 initial_estimate_covariance 较大初值，
+#    解决启动时 map→odom TF 尚未建立的鸡生蛋问题。
+#    ekf_map_node 启动时协方差很大，apriltag_relocator 会在第一次
+#    收到 tag 时立即向 AMCL 发送 /initialpose，由 AMCL 建立 map→odom TF，
+#    之后 ekf_map_node 才能正常融合绝对位置。
 # ============================================================
 
 
@@ -78,7 +85,7 @@ ekf_odom_node:
 # ──────────────────────────────────────────────────────────
 #  EKF 2：AprilTag 绝对位置融合，world_frame = map
 #  publish_tf=false：map→odom TF 由 AMCL 独家负责，避免冲突
-#  输出 /ekf_map_pose 供 apriltag_relocator 使用
+#  输出 /odometry/filtered_map 供 apriltag_relocator 使用
 # ──────────────────────────────────────────────────────────
 ekf_map_node:
   ros__parameters:
@@ -92,6 +99,26 @@ ekf_map_node:
 
     use_sim_time: true
     publish_tf: false            # ← 关键：不发布 TF，AMCL 是 map→odom 唯一来源
+
+    # BUG FIX: 设置较大的初始协方差，解决冷启动时 map→odom TF 尚未存在的问题。
+    # 启动后 ekf_map_node 以很大的不确定性开始估计，
+    # 一旦 apriltag_relocator 发送第一次 /initialpose 让 AMCL 建立 TF 后，
+    # ekf_map_node 会通过后续的 /apriltag_pose 和 /odometry/filtered 快速收敛。
+    initial_estimate_covariance: [5.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  5.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  1e-9, 0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  1e-9,0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 1e-9,0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 1.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   1e-9, 0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  1e-9,0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 1e-9,0.0, 0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 1e-9,0.0,  0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 1e-9, 0.0,  0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  1e-9, 0.0, 0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  1e-9,0.0, 0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 1e-9,0.0,
+                                  0.0,  0.0,  0.0,  0.0, 0.0, 0.0,   0.0,  0.0, 0.0, 0.0, 0.0,  0.0,  0.0, 0.0, 1e-9]
 
     odom0: /odometry/filtered
     odom0_config: [true,  true,  false,

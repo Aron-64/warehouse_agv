@@ -4,8 +4,6 @@
 /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/share/bot_localization/package.xml
 /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/share/bot_localization/launch/ekf.launch.py
 /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/share/bot_localization/config/ekf.yaml
-/home/agv/Desktop/catkin/catkin_ws/install/bot_localization/share/bot_localization/maps/map.yaml
-/home/agv/Desktop/catkin/catkin_ws/install/bot_localization/share/bot_localization/maps/map.pgm
 /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages/bot_localization-0.0.0-py3.10.egg-info/top_level.txt
 /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages/bot_localization-0.0.0-py3.10.egg-info/zip-safe
 /home/agv/Desktop/catkin/catkin_ws/install/bot_localization/lib/python3.10/site-packages/bot_localization-0.0.0-py3.10.egg-info/requires.txt

@@ -13,7 +13,7 @@
                 </plugin>
                 <always_on>true</always_on>
                 <visualize>false</visualize>
-                <update_rate>20</update_rate>
+                <update_rate>10</update_rate>
                 <pose>0 0 0 0 0 0</pose>
 				<!-- 激光传感器配置 -->
                 <ray>
@@ -112,7 +112,7 @@
                     </linear_acceleration>
                 </imu>
             </sensor>
-        </gazebo>ss
+        </gazebo>
 
         <gazebo reference="camera_link">
             <sensor type="depth" name="camera_sensor">

@@ -28,7 +28,7 @@ setup(
         'console_scripts': [
             'apriltag_detector = bot_apriltag.apriltag_detector:main',
             'apriltag_localizer = bot_apriltag.apriltag_localizer:main',
-            'apriltag_relocalizer = bot_apriltag.apriltag_relocalizer:main',
+            'apriltag_relocator = bot_apriltag.apriltag_relocalizer:main',
         ],
     },
 )

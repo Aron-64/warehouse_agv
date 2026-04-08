@@ -11,8 +11,6 @@ setup.py
 bot_localization/__init__.py
 config/ekf.yaml
 launch/ekf.launch.py
-maps/map.pgm
-maps/map.yaml
 resource/bot_localization
 test/test_copyright.py
 test/test_flake8.py
