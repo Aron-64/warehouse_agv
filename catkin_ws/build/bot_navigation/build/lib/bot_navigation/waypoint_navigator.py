@@ -41,18 +41,19 @@ def main():
 
     # ── 定义巡航路径 ──────────────────────────────────────────────────────
     # 坐标来自 tag_map.yaml 附近的路径点
-    # yaw 角根据相邻路径点之间的方向估算：
-    #   点0→点1：从 (2.58,-1.23) 到 (2.59,-4.84)，朝向南方 → yaw=-90°
-    #   点1→点2：从 (2.59,-4.84) 到 (-0.93,-5.21)，朝向西方 → yaw=180°
-    #   点2→点3：从 (-0.93,-5.21) 到 (-0.97,-1.27)，朝向北方 → yaw=90°
-    #   点3→点4：从 (-0.97,-1.27) 回到 (2.58,-1.23)，朝向东方 → yaw=0°
-    #   点4（终点）：回到起点，朝向南方与出发方向一致 → yaw=-90°
+
     goal_poses = [
-        make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
-        make_pose(navigator,  2.0, -5.0, yaw_deg=180.0),
-        make_pose(navigator, -0.5, -5.0, yaw_deg= 90.0),
-        make_pose(navigator, -0.5, -1.0, yaw_deg=  0.0),
-        make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
+        make_pose(navigator,  2.0, -1.0, yaw_deg=-25.0),
+        make_pose(navigator,  2.0, -5.0, yaw_deg=-90.0),
+        make_pose(navigator, -0.5, -5.0, yaw_deg=180.0),
+        make_pose(navigator, -0.5, -1.0, yaw_deg= 90.0),
+        make_pose(navigator,  2.0, -1.0, yaw_deg=25.0),
+
+        # make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
+        # make_pose(navigator,  2.0, -5.0, yaw_deg=180.0),
+        # make_pose(navigator, -0.5, -5.0, yaw_deg= 90.0),
+        # make_pose(navigator, -0.5, -1.0, yaw_deg=  0.0),
+        # make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
     ]
 
     # 发送 waypoint 列表，stop_on_failure=false 已在 nav2_params.yaml 中配置

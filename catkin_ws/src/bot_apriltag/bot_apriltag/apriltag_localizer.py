@@ -23,7 +23,7 @@ _BLUE   = '\033[94m'
 
 class AprilTagLocalizer(Node):
 
-    # ── 融合窗口时长（秒）：在此时间内收集到的所有tag一起融合 ──
+    # ── 融合窗口时长（秒）：在此时间内收集到的所有 tag 一起融合 ──
     FUSION_WINDOW_SEC = 0.05   # 50 ms，可按帧率调整
 
     def __init__(self):
@@ -84,7 +84,7 @@ class AprilTagLocalizer(Node):
         当窗口超时后触发融合并发布。
         """
 
-        tag_id = msg.child_frame_id          # e.g. "tag_3"
+        tag_id = msg.child_frame_id   # e.g. "tag_3"
 
         if tag_id not in self.tag_map:
             return
@@ -104,7 +104,6 @@ class AprilTagLocalizer(Node):
 
         # ── 2. 缓冲窗口管理 ────────────────────────────────────
         if self._window_start is None:
-            # 开启第一个窗口
             self._window_start = stamp_sec
             self._pending.clear()
 
@@ -143,9 +142,15 @@ class AprilTagLocalizer(Node):
           T_map_base = T_map_tag  ×  T_tag_optical  ×  T_optical_base
 
         其中：
-          T_tag_optical  = inv(T_optical_tag)  —— PnP 输出 T_optical_tag
-                           frame_id 已修正为 camera_optical_link
-          T_optical_base —— TF 查询：camera_optical_link → base_footprint
+          T_tag_optical  = inv(T_optical_tag)
+                           PnP 输出 T_optical_tag，frame_id 已修正为 camera_optical_link
+          T_optical_base = TF 查询：camera_optical_link → base_footprint
+
+        修复说明：
+          原来查询 camera_link → base_footprint，跳过了
+          camera_optical_link → camera_link 之间约 -90° 的旋转。
+          现在改为查询 camera_optical_link → base_footprint，
+          与 detector 发布的 frame_id 完全对齐。
         """
 
         # ── Step 1: map → tag（从 yaml 地图读取）─────────────────
@@ -154,32 +159,30 @@ class AprilTagLocalizer(Node):
         quat_map_tag = tf_transformations.quaternion_from_euler(
             tag['roll'], tag['pitch'], tag['yaw']
         )
-        T_map_tag = tf_transformations.quaternion_matrix(quat_map_tag)
-        T_map_tag[0][3] = tag['x']
-        T_map_tag[1][3] = tag['y']
-        T_map_tag[2][3] = tag['z']
+        T_map_tag         = tf_transformations.quaternion_matrix(quat_map_tag)
+        T_map_tag[0][3]   = tag['x']
+        T_map_tag[1][3]   = tag['y']
+        T_map_tag[2][3]   = tag['z']
 
-        # ── Step 2: optical → tag（PnP 输出，即 T_optical_tag）───
+        # ── Step 2: optical → tag（PnP 输出，即 T_optical_tag）──
         t = msg.transform.translation
         r = msg.transform.rotation
-        T_optical_tag = tf_transformations.quaternion_matrix(
+        T_optical_tag         = tf_transformations.quaternion_matrix(
             [r.x, r.y, r.z, r.w]
         )
-        T_optical_tag[0][3] = t.x
-        T_optical_tag[1][3] = t.y
-        T_optical_tag[2][3] = t.z
+        T_optical_tag[0][3]   = t.x
+        T_optical_tag[1][3]   = t.y
+        T_optical_tag[2][3]   = t.z
 
         # tag → optical = inv(T_optical_tag)
         T_tag_optical = np.linalg.inv(T_optical_tag)
 
         # ── Step 3: optical → base（TF 查询）──────────────────────
-        # 修复：原来查询 camera_link → base_footprint，跳过了
-        # camera_optical_link → camera_link 之间约 -90° 的旋转。
-        # 现在改为查询 camera_optical_link → base_footprint，
-        # 与 detector 发布的 frame_id 完全对齐。
+        # FIX: 查询 camera_optical_link → base_footprint，
+        #      与 detector 的 frame_id 完全对齐。
         try:
             tf = self.tf_buffer.lookup_transform(
-                'camera_optical_link',   # target_frame（与PnP坐标系一致）
+                'camera_optical_link',   # target_frame（与 PnP 坐标系一致）
                 'base_footprint',        # source_frame
                 rclpy.time.Time()
             )
@@ -189,12 +192,12 @@ class AprilTagLocalizer(Node):
 
         tc = tf.transform.translation
         rc = tf.transform.rotation
-        T_optical_base = tf_transformations.quaternion_matrix(
+        T_optical_base         = tf_transformations.quaternion_matrix(
             [rc.x, rc.y, rc.z, rc.w]
         )
-        T_optical_base[0][3] = tc.x
-        T_optical_base[1][3] = tc.y
-        T_optical_base[2][3] = tc.z
+        T_optical_base[0][3]   = tc.x
+        T_optical_base[1][3]   = tc.y
+        T_optical_base[2][3]   = tc.z
 
         # ── Step 4: 核心链式计算 ───────────────────────────────────
         T_map_base = T_map_tag @ T_tag_optical @ T_optical_base
@@ -212,7 +215,8 @@ class AprilTagLocalizer(Node):
 
     def _fuse_and_publish(self, records: list[dict]):
         """
-        对缓冲区内所有 tag 的定位结果做距离加权融合，发布一次 PoseWithCovarianceStamped。
+        对缓冲区内所有 tag 的定位结果做距离加权融合，
+        发布一次 PoseWithCovarianceStamped。
 
         位置 (x, y)：加权平均
         朝向 (yaw) ：单位复数加权平均（避免角度翻转）
@@ -234,7 +238,7 @@ class AprilTagLocalizer(Node):
         yaw_fused = float(np.arctan2(sin_sum, cos_sum))
 
         # ── 自动协方差缩放 ────────────────────────────────────────
-        #   tag 越近（dist 小）、数量越多，方差越小
+        # tag 越近（dist 小）、数量越多，方差越小
         n_tags   = len(records)
         avg_dist = float(np.mean([r['dist'] for r in records]))
         scale    = (avg_dist ** 2) / n_tags
@@ -246,10 +250,10 @@ class AprilTagLocalizer(Node):
         cov = [0.0] * 36
         cov[0]  = max(cov_xy,  0.001)   # x
         cov[7]  = max(cov_xy,  0.001)   # y
-        cov[14] = 1.0                    # z（2D 导航不用）
-        cov[21] = 1.0                    # roll（不用）
-        cov[28] = 1.0                    # pitch（不用）
-        cov[35] = max(cov_yaw, 0.01)    # yaw
+        cov[14] = 1.0                   # z（2D 导航不用）
+        cov[21] = 1.0                   # roll（不用）
+        cov[28] = 1.0                   # pitch（不用）
+        cov[35] = max(cov_yaw, 0.01)   # yaw
 
         # ── 构造消息 ───────────────────────────────────────────────
         pose = PoseWithCovarianceStamped()

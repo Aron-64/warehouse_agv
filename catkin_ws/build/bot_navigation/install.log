@@ -5,7 +5,10 @@
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/ament_index/resource_index/packages/bot_navigation
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/package.xml
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/launch/nav2.launch.py
+/home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/launch/experiment.launch.py
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/config/nav2_params.yaml
+/home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/config/nav2_params_group_a.yaml
+/home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/config/nav2_params_group_b.yaml
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/maps/map.yaml
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/share/bot_navigation/maps/map.pgm
 /home/agv/Desktop/catkin/catkin_ws/install/bot_navigation/lib/python3.10/site-packages/bot_navigation-0.0.0-py3.10.egg-info/top_level.txt

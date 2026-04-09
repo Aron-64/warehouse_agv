@@ -1626,7 +1626,7 @@
     </light>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>0.601009 7.51806 5.36196 0 0.649797 -1.63582</pose>
+        <pose>0.284795 2.15734 5.12396 0 0.829797 -1.63982</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -2257,10 +2257,10 @@
       </spot>
     </light>
     <state world_name='default'>
-      <sim_time>917 462000000</sim_time>
-      <real_time>348 822939232</real_time>
-      <wall_time>1775369545 88272772</wall_time>
-      <iterations>295227</iterations>
+      <sim_time>1295 535000000</sim_time>
+      <real_time>48 858872805</real_time>
+      <wall_time>1775654482 71258396</wall_time>
+      <iterations>48421</iterations>
       <model name='apriltag_0'>
         <pose>2.78191 -1.232 0.289752 0 -1.56873 0</pose>
         <scale>1 1 1</scale>
@@ -2276,26 +2276,6 @@
         <scale>1 1 1</scale>
         <link name='link'>
           <pose>2.7886 -4.83957 0.337347 0 -1.56657 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='apriltag_2'>
-        <pose>-1.13363 -5.20752 0.297011 0 1.56917 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>-1.13363 -5.20752 0.297011 0 1.56917 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='apriltag_3'>
-        <pose>-1.17444 -1.26784 0.322428 0 1.56556 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose>-1.17444 -1.26784 0.322428 0 1.56556 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2552,25 +2532,25 @@
         </link>
       </model>
       <model name='robot'>
-        <pose>0.004174 -0.045686 0.001 0 -0 -0.005577</pose>
+        <pose>0.000117 -0.000817 0.001 0 0 -0.000232</pose>
         <scale>1 1 1</scale>
         <link name='base_footprint'>
-          <pose>0.004174 -0.045686 0.001 0 -0 -0.005577</pose>
-          <velocity>5e-06 -2.3e-05 -3e-06 0.000566 -4e-06 6.1e-05</velocity>
-          <acceleration>-0.001609 -0.209058 -0.003246 1.41691 -0.010632 0.259499</acceleration>
-          <wrench>-0.002349 -0.305225 -0.004739 0 -0 0</wrench>
+          <pose>0.000117 -0.000817 0.001 0 0 -0.000232</pose>
+          <velocity>5e-06 -0.0001 0 -0.000108 -0 2.9e-05</velocity>
+          <acceleration>3e-06 0.000779 -0.002433 0.004262 -0.000711 -0.000481</acceleration>
+          <wrench>4e-06 0.001137 -0.003552 0 -0 0</wrench>
         </link>
         <link name='left_wheel_link'>
-          <pose>0.004732 0.054313 0.032 3e-06 -0.000661 -0.005577</pose>
-          <velocity>-0 -5.2e-05 8.6e-05 0.001618 -5.1e-05 6e-05</velocity>
-          <acceleration>-0.026453 -0.126942 0.171371 2.46863 -0.05563 0.258766</acceleration>
-          <wrench>-0.005291 -0.025388 0.034274 0 -0 0</wrench>
+          <pose>0.00014 0.099183 0.032 3e-06 -7.4e-05 -0.000232</pose>
+          <velocity>2e-06 -9.8e-05 -1.8e-05 -0.000696 1e-06 2.8e-05</velocity>
+          <acceleration>2.6e-05 -0.000906 -0.009644 -0.583672 0.000135 -0.001559</acceleration>
+          <wrench>5e-06 -0.000181 -0.001929 0 -0 0</wrench>
         </link>
         <link name='right_wheel_link'>
-          <pose>0.003616 -0.145684 0.032 5e-06 0.000731 -0.005577</pose>
-          <velocity>1.1e-05 -4.9e-05 -8e-06 0.001538 0.000318 5.2e-05</velocity>
-          <acceleration>0.024816 -0.124484 -0.09333 2.38873 0.313565 0.249273</acceleration>
-          <wrench>0.004963 -0.024897 -0.018666 0 -0 0</wrench>
+          <pose>9.3e-05 -0.100817 0.032 5e-06 0.00013 -0.000232</pose>
+          <velocity>8e-06 -0.000102 -5e-06 -0.001162 1e-06 3.2e-05</velocity>
+          <acceleration>-4.7e-05 -0.004779 -0.018178 -1.05036 0.000244 0.002614</acceleration>
+          <wrench>-9e-06 -0.000956 -0.003636 0 -0 0</wrench>
         </link>
       </model>
       <light name='Warehouse_CeilingLight_003'>
@@ -2581,12 +2561,6 @@
       </light>
       <light name='user_spot_light_1'>
         <pose>2.06355 -4.89492 1.26392 0 -0.482324 0</pose>
-      </light>
-      <light name='user_spot_light_2'>
-        <pose>-0.62079 -5.14187 1.26497 0 0.373633 0</pose>
-      </light>
-      <light name='user_spot_light_3'>
-        <pose>-0.771995 -1.45192 1.38913 0.17487 0.088383 0.015593</pose>
       </light>
     </state>
     <model name='apriltag_1'>
@@ -2624,75 +2598,5 @@
         <falloff>1</falloff>
       </spot>
     </light>
-    <light name='user_spot_light_2' type='spot'>
-      <pose>-0.932832 -7.86751 1 0 -0 0</pose>
-      <diffuse>0.5 0.5 0.5 1</diffuse>
-      <specular>0.1 0.1 0.1 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>20</range>
-        <constant>0.5</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0.6</inner_angle>
-        <outer_angle>1</outer_angle>
-        <falloff>1</falloff>
-      </spot>
-    </light>
-    <light name='user_spot_light_3' type='spot'>
-      <pose>-1.60448 1.08918 1 0 -0 0</pose>
-      <diffuse>0.5 0.5 0.5 1</diffuse>
-      <specular>0.1 0.1 0.1 1</specular>
-      <direction>0 0 -1</direction>
-      <attenuation>
-        <range>20</range>
-        <constant>0.5</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <spot>
-        <inner_angle>0.6</inner_angle>
-        <outer_angle>1</outer_angle>
-        <falloff>1</falloff>
-      </spot>
-    </light>
-    <model name='apriltag_2'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://apriltag_2/meshes/apriltag_2.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-0.898931 -5.20752 0 0 -0 0</pose>
-    </model>
-    <model name='apriltag_3'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://apriltag_3/meshes/apriltag_3.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>-0.9171 -1.26784 0 0 -0 0</pose>
-    </model>
   </world>
 </sdf>

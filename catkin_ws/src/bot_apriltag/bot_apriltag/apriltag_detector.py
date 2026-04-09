@@ -33,8 +33,8 @@ class AprilTagDetector(Node):
                 True
             )
         ])
-        self.bridge    = CvBridge()
-        self.detector  = Detector()
+        self.bridge   = CvBridge()
+        self.detector = Detector()
 
         # 相机内参
         self.camera_matrix = None
@@ -44,8 +44,8 @@ class AprilTagDetector(Node):
         self.tag_size = 0.5
 
         # ── 状态追踪：只在数量变化时重新打印 ────────────────────
-        self._last_tag_count = -1          # -1 表示从未输出过
-        self._last_tag_ids:set = set()     # 上一帧检测到的 tag id 集合
+        self._last_tag_count = -1       # -1 表示从未输出过
+        self._last_tag_ids: set = set() # 上一帧检测到的 tag id 集合
 
         qos = QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT)
 
@@ -94,9 +94,9 @@ class AprilTagDetector(Node):
         img  = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        results  = self.detector.detect(gray)
-        count    = len(results)
-        tag_ids  = {r.tag_id for r in results}
+        results = self.detector.detect(gray)
+        count   = len(results)
+        tag_ids = {r.tag_id for r in results}
 
         # ── 只在「数量」或「id 集合」发生变化时打印 ──────────────
         if count != self._last_tag_count or tag_ids != self._last_tag_ids:
@@ -123,7 +123,6 @@ class AprilTagDetector(Node):
             )
             return
 
-        # —— 标题行 ——
         color  = _GREEN if count == self._last_tag_count else _YELLOW
         header = (
             f'\n{color}{_BOLD}'
@@ -136,7 +135,6 @@ class AprilTagDetector(Node):
         )
         self.get_logger().info(header)
 
-        # —— 每个 tag 的详细信息 ——
         for r in results:
             tag_id = r.tag_id
 
@@ -160,9 +158,9 @@ class AprilTagDetector(Node):
                 dist = float(np.linalg.norm(tvec))
                 self.get_logger().info(
                     f'{_CYAN}'
-                    f'\n│  Tag ID : {tag_id}\n'
+                    f'\n│  Tag ID      : {tag_id}\n'
                     f'│  Pos(optical): x={tx:+.3f}  y={ty:+.3f}  z={tz:+.3f}  (m)\n'
-                    f'│  Dist   : {dist:.3f} m'
+                    f'│  Dist        : {dist:.3f} m'
                     f'{_RESET}'
                 )
             else:
@@ -170,7 +168,6 @@ class AprilTagDetector(Node):
                     f'{_CYAN}│  Tag ID : {tag_id}   (PnP solve failed){_RESET}'
                 )
 
-        # —— 底部边框 ——
         self.get_logger().info(
             f'\n{color}{_BOLD}'
             f'\n└─────────────────────────────────────────────────┘'
@@ -180,11 +177,17 @@ class AprilTagDetector(Node):
     # ------------------------------------------------------------------ #
 
     def _publish_tag(self, r, msg):
-        """对单个检测结果做 PnP 并发布 TransformStamped。
+        """
+        对单个检测结果做 PnP 并发布 TransformStamped。
 
-        PnP 在图像（光学）坐标系下求解，结果天然属于 camera_optical_link 坐标系。
+        PnP 在图像（光学）坐标系下求解，结果天然属于 camera_optical_link。
         frame_id 声明为 camera_optical_link，localizer 侧查询
         camera_optical_link → base_footprint 的 TF 才能正确对齐。
+
+        修复说明：
+          原来 frame_id 错误地写成 camera_link，跳过了
+          camera_optical_link → camera_link 之间约 -90° 的旋转，
+          导致 yaw 误差接近 -90°，机器人方向估计完全错误。
         """
 
         tag_id        = r.tag_id
@@ -208,32 +211,32 @@ class AprilTagDetector(Node):
 
         R, _ = cv2.Rodrigues(rvec)
 
-        T          = np.eye(4)
-        T[:3, :3]  = R
-        T[:3, 3]   = tvec.flatten()
+        T         = np.eye(4)
+        T[:3, :3] = R
+        T[:3, 3]  = tvec.flatten()
 
-        quat = self.rotation_matrix_to_quaternion(R)
+        quat = self._rotation_matrix_to_quaternion(R)
 
-        t                          = TransformStamped()
-        t.header.stamp             = msg.header.stamp
-        # 修复：PnP 在光学坐标系下求解，frame_id 必须为 camera_optical_link
-        # 原来错误地写成 camera_link，导致跳过了 camera_optical_link→camera_link
-        # 之间约 -90° 的旋转，造成 yaw 误差接近 -90°
-        t.header.frame_id          = 'camera_optical_link'
-        t.child_frame_id           = f'tag_{tag_id}'
-        t.transform.translation.x  = T[0, 3]
-        t.transform.translation.y  = T[1, 3]
-        t.transform.translation.z  = T[2, 3]
-        t.transform.rotation.x     = quat[0]
-        t.transform.rotation.y     = quat[1]
-        t.transform.rotation.z     = quat[2]
-        t.transform.rotation.w     = quat[3]
+        t                         = TransformStamped()
+        t.header.stamp            = msg.header.stamp
+        # FIX: PnP 在光学坐标系下求解，frame_id 必须为 camera_optical_link
+        t.header.frame_id         = 'camera_optical_link'
+        t.child_frame_id          = f'tag_{tag_id}'
+        t.transform.translation.x = T[0, 3]
+        t.transform.translation.y = T[1, 3]
+        t.transform.translation.z = T[2, 3]
+        t.transform.rotation.x    = quat[0]
+        t.transform.rotation.y    = quat[1]
+        t.transform.rotation.z    = quat[2]
+        t.transform.rotation.w    = quat[3]
 
         self.pub.publish(t)
 
     # ------------------------------------------------------------------ #
 
-    def rotation_matrix_to_quaternion(self, R):
+    @staticmethod
+    def _rotation_matrix_to_quaternion(R: np.ndarray) -> np.ndarray:
+        """将 3×3 旋转矩阵转换为四元数 [x, y, z, w]。"""
 
         q     = np.zeros(4)
         trace = np.trace(R)
@@ -244,25 +247,24 @@ class AprilTagDetector(Node):
             q[0] = (R[2, 1] - R[1, 2]) * s
             q[1] = (R[0, 2] - R[2, 0]) * s
             q[2] = (R[1, 0] - R[0, 1]) * s
+        elif R[0, 0] > R[1, 1] and R[0, 0] > R[2, 2]:
+            s    = 2.0 * np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2])
+            q[3] = (R[2, 1] - R[1, 2]) / s
+            q[0] = 0.25 * s
+            q[1] = (R[0, 1] + R[1, 0]) / s
+            q[2] = (R[0, 2] + R[2, 0]) / s
+        elif R[1, 1] > R[2, 2]:
+            s    = 2.0 * np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2])
+            q[3] = (R[0, 2] - R[2, 0]) / s
+            q[0] = (R[0, 1] + R[1, 0]) / s
+            q[1] = 0.25 * s
+            q[2] = (R[1, 2] + R[2, 1]) / s
         else:
-            if R[0, 0] > R[1, 1] and R[0, 0] > R[2, 2]:
-                s    = 2.0 * np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2])
-                q[3] = (R[2, 1] - R[1, 2]) / s
-                q[0] = 0.25 * s
-                q[1] = (R[0, 1] + R[1, 0]) / s
-                q[2] = (R[0, 2] + R[2, 0]) / s
-            elif R[1, 1] > R[2, 2]:
-                s    = 2.0 * np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2])
-                q[3] = (R[0, 2] - R[2, 0]) / s
-                q[0] = (R[0, 1] + R[1, 0]) / s
-                q[1] = 0.25 * s
-                q[2] = (R[1, 2] + R[2, 1]) / s
-            else:
-                s    = 2.0 * np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1])
-                q[3] = (R[1, 0] - R[0, 1]) / s
-                q[0] = (R[0, 2] + R[2, 0]) / s
-                q[1] = (R[1, 2] + R[2, 1]) / s
-                q[2] = 0.25 * s
+            s    = 2.0 * np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1])
+            q[3] = (R[1, 0] - R[0, 1]) / s
+            q[0] = (R[0, 2] + R[2, 0]) / s
+            q[1] = (R[1, 2] + R[2, 1]) / s
+            q[2] = 0.25 * s
 
         return q
 
