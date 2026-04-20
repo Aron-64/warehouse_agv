@@ -1,4 +1,0 @@
-Invoking command in '/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo -- -j8 -l8
-Invoked command in '/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo -- -j8 -l8
-Invoking command in '/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo
-Invoked command in '/home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/agv/Desktop/catkin/catkin_ws/build/bot_gazebo
