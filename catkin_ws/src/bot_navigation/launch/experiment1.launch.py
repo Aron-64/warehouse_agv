@@ -71,8 +71,7 @@ def launch_setup(context, *args, **kwargs):
         '/tag_detections',          # 原始 tag 检测（组C）
         '/initialpose',             # relocator 重定位指令（组C）
     ]
-
-   bag_record = ExecuteProcess(
+    bag_record = ExecuteProcess(
         cmd=[
             'ros2', 'bag', 'record',
             '--output', bag_dir,

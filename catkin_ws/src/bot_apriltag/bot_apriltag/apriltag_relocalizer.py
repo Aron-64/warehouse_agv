@@ -64,7 +64,7 @@ class AprilTagRelocator(Node):
         # ── 可调参数 ──────────────────────────────────────────
         self.declare_parameter('position_threshold',       0.3)
         self.declare_parameter('yaw_threshold',            0.15)
-        self.declare_parameter('cooldown_sec',             15.0)   # Bug 3 修复: 5 → 15
+        self.declare_parameter('cooldown_sec',             15.0)   
         self.declare_parameter('tag_timeout_sec',          2.0)
         self.declare_parameter('cov_high_threshold',       0.02)
         self.declare_parameter('cov_low_threshold',        0.08)

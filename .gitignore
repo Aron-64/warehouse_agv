@@ -1,4 +1,14 @@
 # Ignore build  log and install directories
-log/
-build/
-install/
+catkin_ws/log/
+catkin_ws/build/
+catkin_ws/install/
+
+# Ignore generated graph files
+catkin_ws/frames_*.gv
+catkin_ws/frames_*.pdf
+
+# Ignore generated trajectory comparison image
+catkin_ws/src/trajactory_comparison.png
+
+# Ignore all files in experiment bags
+catkin_ws/src/experiment_bags/
