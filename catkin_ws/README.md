@@ -68,17 +68,6 @@ warehouse_agv/
   - 局部路径规划
   - Waypoint导航
 
----
-
-## 🔄 TF坐标系关系
-
-```
-map
- └── odom
-      └── base_link
-           ├── laser_link
-           └── camera_link
-```
 
 ---
 
