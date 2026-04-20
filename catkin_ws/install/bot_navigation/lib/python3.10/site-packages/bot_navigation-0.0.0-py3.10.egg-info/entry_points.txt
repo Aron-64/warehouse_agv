@@ -1,3 +1,0 @@
-[console_scripts]
-waypoint_navigator = bot_navigation.waypoint_navigator:main
-
