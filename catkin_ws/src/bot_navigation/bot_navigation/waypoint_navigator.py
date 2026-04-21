@@ -43,17 +43,23 @@ def main():
     # 坐标来自 tag_map.yaml 附近的路径点
 
     goal_poses = [
-        make_pose(navigator,  2.0, -1.0, yaw_deg=-25.0),
-        make_pose(navigator,  2.0, -5.0, yaw_deg=-90.0),
-        make_pose(navigator, -0.5, -5.0, yaw_deg=180.0),
-        make_pose(navigator, -0.5, -1.0, yaw_deg= 90.0),
-        make_pose(navigator,  2.0, -1.0, yaw_deg=25.0),
+        # experiment1_goal_poses
+        # make_pose(navigator,  2.0, -1.0, yaw_deg=-25.0),
+        # make_pose(navigator,  2.0, -5.0, yaw_deg=-90.0),
+        # make_pose(navigator, -0.5, -5.0, yaw_deg=180.0),
+        # make_pose(navigator, -0.5, -1.0, yaw_deg= 90.0),
+        # make_pose(navigator,  2.0, -1.0, yaw_deg=25.0),
 
-        # make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
-        # make_pose(navigator,  2.0, -5.0, yaw_deg=180.0),
-        # make_pose(navigator, -0.5, -5.0, yaw_deg= 90.0),
-        # make_pose(navigator, -0.5, -1.0, yaw_deg=  0.0),
-        # make_pose(navigator,  2.0, -1.0, yaw_deg=-90.0),
+        # experiment2_goal_poses
+        make_pose(navigator,  2.0, -1.0, yaw_deg=-25.0),
+        make_pose(navigator,  2.0, -2.0, yaw_deg=0.0),
+        make_pose(navigator,  4.5, -2.0, yaw_deg=0.0),
+        make_pose(navigator,  4.5, -2.0, yaw_deg=-90.0),
+        make_pose(navigator,  4.5, -2.0, yaw_deg=-180.0),
+        make_pose(navigator,  2.0, -2.0, yaw_deg=-180.0),
+        make_pose(navigator,  2.0, -2.0, yaw_deg=-90.0),
+        make_pose(navigator,  1.0, -4.0, yaw_deg=-135.0),
+        make_pose(navigator, -0.5, -5.0, yaw_deg=-180.0),
     ]
 
     # 发送 waypoint 列表，stop_on_failure=false 已在 nav2_params.yaml 中配置

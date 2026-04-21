@@ -12,7 +12,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         
         ('share/' + package_name + '/launch', ['launch/nav2.launch.py']),
-        ('share/' + package_name + '/launch', ['launch/experiment.launch.py']),
+        ('share/' + package_name + '/launch', ['launch/experiment1.launch.py']),
         ('share/' + package_name + '/config', ['config/nav2_params.yaml']),
         ('share/' + package_name + '/config', ['config/nav2_params_group_a.yaml']),
         ('share/' + package_name + '/config', ['config/nav2_params_group_b.yaml']),
