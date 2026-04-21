@@ -8,7 +8,7 @@ catkin_ws/frames_*.gv
 catkin_ws/frames_*.pdf
 
 # Ignore generated trajectory comparison image
-catkin_ws/src/trajactory_comparison.png
+catkin_ws/src/*.png
 
 # Ignore all files in experiment bags
 catkin_ws/src/experiment_bags/
